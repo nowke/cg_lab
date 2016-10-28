@@ -4,22 +4,26 @@
 #include <GLUT/glut.h>
 
 #else
+
 #include <GL/gl.h>
 #include <GL/glut.h>
+
 #endif
 
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
 int x1, y1, r;
 
 void myInit() {
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0.0, 0.0, 0.0, 1.0);
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0, 500, 0, 500);
+    glColor3f(0.0, 0.0, 0.0);
 }
 
-void draw(int x, int y) {
+void drawOctetPoints(int x, int y) {
     glBegin(GL_POINTS);
     glVertex2i(x + x1, y + y1);
     glVertex2i(-x + x1, y + y1);
@@ -33,11 +37,11 @@ void draw(int x, int y) {
 }
 
 void drawCircle(int r) {
-    int x, y, d;
-    d = 1 - r;
-    x = 0;
-    y = r;
-    draw(x, y);
+    int d = 1 - r;
+    int x = 0;
+    int y = r;
+
+    drawOctetPoints(x, y);
     while (x <= y) {
         if (d < 0) {
             x++;
@@ -48,7 +52,7 @@ void drawCircle(int r) {
             y--;
             d = d + 2 * x - 2 * y + 1;
         }
-        draw(x, y);
+        drawOctetPoints(x, y);
     }
 }
 
@@ -59,8 +63,8 @@ void myDisplay() {
 
 int main(int argc, char **argv) {
 
-    printf("Enter Circle Center (x1, y1) and radius (r)\n");
-    scanf("%d %d %d", &x1, &y1, &r);
+    cout << "Enter Circle Center (x1, y1) and radius (r)" << endl;
+    cin >> x1 >> y1 >> r;
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

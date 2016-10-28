@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: ./compile linux"
+  echo "Usage: ./compile mac"
+else
+  os=$1
+  if [ "$os" == "mac" ]; then
+    g++ bresenham_circle.cpp -framework OpenGL -framework GLUT -o bresenham_circle.o
+  elif [ "$os" == "linux" ]; then
+    g++ bresenham_circle.cpp -lGL -lGLU -lglut -o bresenham_circle.o 
+  else
+    echo "Usage: ./compile linux"
+    echo "Usage: ./compile mac"
+  fi
+fi
