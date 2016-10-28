@@ -1,6 +1,6 @@
 # Computer Graphics Lab Programs [12SC72]
 
-1. [Bresenham's Line Drawing](1_bresenham_line) ( [bresenham_line.cpp](1_bresenham_line/bresenham_line.cp) )
+1. [Bresenham's Line Drawing](1_bresenham_line) ( [bresenham_line.cpp](1_bresenham_line/bresenham_line.cpp) )
 2. [Bresenham's Circle Drawing](2_bresenham_circle) ( [bresenham_circle.cpp](2_bresenham_circle/bresenham_circle.cpp) )
 
 ## Setup OpenGL
