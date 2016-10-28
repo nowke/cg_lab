@@ -52,9 +52,9 @@ void draw_line(int x1, int x2, int y1, int y2) {
             if (e >= 0) {
                 y += incy;
                 e += 2 * (dy - dx);
-            }
-            else
+            } else {
                 e += 2 * dy;
+            }
             x += incx;
             draw_pixel(x, y);
         }
