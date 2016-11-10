@@ -1,116 +1,86 @@
-#include<iostream>
-
 #ifdef __APPLE__
 
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
 
 #else
+
 #include <GL/gl.h>
 #include <GL/glut.h>
-#endif
-using namespace std;
-static GLfloat spin = 0.0;
-int t, wid1, wid2;
 
-void myinit() {
+#endif
+
+#include <iostream>
+using namespace std;
+
+GLfloat vertices[] = {-1.0, -1.0, -1.0,
+                       1.0, -1.0, -1.0,
+                       1.0, 1.0, -1.0,
+                      -1.0, 1.0, -1.0,
+                      -1.0, -1.0, 1.0,
+                       1.0, -1.0, 1.0,
+                       1.0, 1.0, 1.0,
+                      -1.0, 1.0, 1.0};
+GLfloat colors[] = {0.0, 0.0, 0.0,
+                    1.0, 0.0, 0.0,
+                    1.0, 1.0, 0.0,
+                    0.0, 1.0, 0.0,
+                    0.0, 0.0, 1.0,
+                    0.0, 1.0, 1.0};
+GLubyte cube_indices[] = {0, 1, 2, 3,
+                          5, 1, 2, 6,
+                          4, 5, 6, 7,
+                          0, 4, 7, 3,
+                          2, 3, 7, 6,
+                          0, 1, 5, 4};
+static GLfloat theta[] = {0.0, 0.0, 0.0};
+static GLint axis = 2;
+
+void myInit() {
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    glOrtho(-2.0, 2.0 , -2.0, 2.0, -2.0, 2.0);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glColor3f(1.0, 0.0, 0.0);
 }
 
-void spinDisplay() {
-    spin += 0.02;
+void myDisplay() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glRotatef(theta[0], 1.0, 0.0, 0.0);
+    glRotatef(theta[1], 0.0, 1.0, 0.0);
+    glRotatef(theta[2], 0.0, 0.0, 1.0);
+    glDrawElements(GL_QUADS, 24, GL_UNSIGNED_BYTE, cube_indices);
+    glFlush();
+}
+
+void cube_spin() {
+    theta[axis] += 2.0;
     glutPostRedisplay();
 }
 
-void display1() {
-    glutSetWindow(t);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPushMatrix();
-    glLoadIdentity();
-    glRotatef(spin, 0.0, 0.0, 1.0);
-    glBegin(GL_POLYGON);
-    glVertex3f(-0.25, -0.25, 0.25);
-    glVertex3f(0.25, -0.25, 0.25);
-    glVertex3f(0.25, 0.25, 0.25);
-    glVertex3f(-0.25, 0.25, 0.25);
-    glEnd();
-    glPopMatrix();
-    if (t == wid1) {
-        glFlush();
-        t = wid2;
-    }
-    else {
-        glutSwapBuffers();
-        t = wid1;
-    }
-}
-
-void display2() {
-    glutSetWindow(wid2);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPushMatrix();
-    glLoadIdentity();
-    glRotatef(spin, 0.0, 0.0, 1.0);
-    glBegin(GL_POLYGON);
-    glVertex3f(-0.25, -0.25, 0.25);
-    glVertex3f(0.25, -0.25, 0.25);
-    glVertex3f(0.25, 0.25, 0.25);
-    glVertex3f(-0.25, 0.25, 0.25);
-    glEnd();
-    glPopMatrix();
-    glutSwapBuffers();
-}
-
-void mouse1(int button, int state, int x, int y) {
-    switch (button) {
-        case GLUT_LEFT_BUTTON:
-            if (state == GLUT_DOWN)
-                glutIdleFunc(spinDisplay);
-            break;
-        case GLUT_RIGHT_BUTTON:
-            if (state == GLUT_DOWN)
-                glutIdleFunc(NULL);
-            break;
-        default:
-            break;
-    }
-}
-
-void mouse2(int button, int state, int x, int y) {
-    switch (button) {
-        case GLUT_LEFT_BUTTON:
-            if (state == GLUT_DOWN)
-                glutIdleFunc(spinDisplay);
-            break;
-        case GLUT_RIGHT_BUTTON:
-            if (state == GLUT_DOWN)
-                glutIdleFunc(NULL);
-            break;
-        default:
-            break;
-    }
+void mouse(int btn, int state, int x, int y) {
+    if(btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+        axis = 0;
+    if(btn == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
+        axis = 1;
+    if(btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+        axis = 2;
 }
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
-    glutInitWindowSize(500, 500);
-    wid1 = glutCreateWindow("Single");
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutDisplayFunc(display1);
-    glutMouseFunc(mouse1);
-    glutInitWindowSize(500, 500);
-    wid1 = glutCreateWindow("Double");
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    t = wid1;
-    glutDisplayFunc(display1);
-    glutMouseFunc(mouse2);
-    myinit();
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(600, 600);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("Cube Spin");
+    myInit();
+    glutDisplayFunc(myDisplay);
+    glutIdleFunc(cube_spin);
+    glutMouseFunc(mouse);
+    glEnable(GL_DEPTH_TEST);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(3, GL_FLOAT, 0, colors);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_FLOAT, 0, vertices);
+
     glutMainLoop();
-    return 0;
 }

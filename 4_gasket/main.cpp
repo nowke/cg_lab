@@ -66,7 +66,6 @@ int main(int argc, char **argv) {
     myInit();
     glutDisplayFunc(myDisplay);
     glEnable(GL_DEPTH_TEST);
-    glClearColor(1.0, 1.0, 1.0, 1.0);
     glutMainLoop();
 
     return 0;

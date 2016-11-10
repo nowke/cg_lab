@@ -16,7 +16,6 @@ void myInit() {
     glClearColor(1.0,1.0,1.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
     gluOrtho2D(-300, 500.0, -300, 500.0);
     glColor3f(0.0, 0.0, 0.0);
 }

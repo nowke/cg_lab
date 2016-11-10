@@ -18,14 +18,11 @@ GLfloat house[3][9]={ {100.0,100.0,250.0,250.0,175.0,150.0,150.0,200.0,200.0},
                       {1.0,   1.0,    1.0,    1.0,    1.0,    1.0,    1.0,    1.0,    1.0  }  };
 
 GLfloat theta,m,c;
-GLfloat h=100.0;
-GLfloat k=100.0;
 
 void myInit() {
     glClearColor(1.0,1.0,1.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
     gluOrtho2D(-300, 500.0, -300, 500.0);
     glColor3f(0.0, 0.0, 0.0);
 }
@@ -106,7 +103,7 @@ int main(int argc, char* argv[]) {
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
     glutInitWindowSize(500,500);
     glutInitWindowPosition(0,0);
-    glutCreateWindow("house rotation");
+    glutCreateWindow("house reflect");
     glutDisplayFunc(display);
     myInit();
     glutMainLoop();
