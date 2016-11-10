@@ -8,21 +8,14 @@
 #include <GL/glut.h>
 #endif
 
-#include <math.h>
-
-GLfloat v[4][3] = {
-        {0.0, 0.0, 1.0},
-        {0.0, 0.942809, -0.33333},
-        {-0.816497, -0.471405, -0.333333},
-        {0.816497, -0.471405, -0.333333}
-};
+float v[4][3]={{0,200,400},{0,0,-350},{-300,300,200},{200,300,350}};
 int n;
 
 void myInit() {
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
+    glOrtho(-500, 500, -500, 500, -500, 500);
 }
 
 void triangle(float* a, float* b, float* c) {
@@ -33,39 +26,32 @@ void triangle(float* a, float* b, float* c) {
     glEnd();
 }
 
-void tetra(float* a, float* b, float* c, float* d) {
-    glColor3f(1.0, 0.0, 0.0);
-    triangle(a, b, c);
-    glColor3f(0.0, 1.0, 0.0);
-    triangle(a, c, d);
-    glColor3f(0.0, 0.0, 1.0);
-    triangle(a, d, b);
-    glColor3f(0.0, 0.0, 0.0);
-    triangle(b, d, c);
-}
-
-void divideTetra(float* a, float* b, float* c, float* d, int m) {
-    float mid[6][3];
+void divideTriangle(float* a, float* b, float* c, int m) {
+    float mid[3][3];
     if (m > 0) {
         for (int j=0; j<3; j++) {
-            mid[0][j] = (a[j] + b[j]) / 2;
-            mid[1][j] = (a[j] + c[j]) / 2;
-            mid[2][j] = (a[j] + d[j]) / 2;
-            mid[3][j] = (b[j] + c[j]) / 2;
-            mid[4][j] = (c[j] + d[j]) / 2;
-            mid[5][j] = (b[j] + d[j]) / 2;
+            mid[0][j] = (a[j] + b[j]) /2;
+            mid[1][j] = (b[j] + c[j]) /2;
+            mid[2][j] = (a[j] + c[j]) /2;
         }
-        divideTetra(a, mid[0], mid[1], mid[2], m-1);
-        divideTetra(b, mid[0], mid[3], mid[5], m-1);
-        divideTetra(c, mid[1], mid[3], mid[4], m-1);
-        divideTetra(d, mid[2], mid[4], mid[5], m-1);
+        divideTriangle(a, mid[0], mid[2], m-1);
+        divideTriangle(b, mid[0], mid[1], m-1);
+        divideTriangle(c, mid[1], mid[2], m-1);
     } else {
-        tetra(a, b, c, d);
+        triangle(a, b, c);
     }
+
 }
 
 void myDisplay() {
-    divideTetra(v[0], v[1], v[2], v[3], n);
+    glColor3f(1.0, 0.0, 0.0);
+    divideTriangle(v[0], v[1], v[2], n);
+    glColor3f(0.0, 1.0, 0.0);
+    divideTriangle(v[0], v[2], v[3], n);
+    glColor3f(0.0, 0.0, 1.0);
+    divideTriangle(v[0], v[1], v[3], n);
+    glColor3f(1.0, 1.0, 1.0);
+    divideTriangle(v[1], v[2], v[3], n);
     glFlush();
 }
 
