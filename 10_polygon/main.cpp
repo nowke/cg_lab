@@ -235,13 +235,6 @@ void clip_top_edge() {
     polygon = new_polygon;
 }
 
-void calc_polygon() {
-    clip_left_edge();
-    clip_right_edge();
-    clip_bottom_edge();
-    clip_top_edge();
-}
-
 void draw_window() {
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
@@ -260,11 +253,6 @@ void draw_polygon() {
     glEnd();
 }
 
-void draw_clipped_polygon() {
-    calc_polygon();
-    draw_polygon();
-}
-
 void display() {
     draw_window();
     setup_polygon();
@@ -274,7 +262,13 @@ void display() {
 
 void display2() {
     draw_window();
-    draw_clipped_polygon();
+
+    clip_left_edge();
+    clip_right_edge();
+    clip_bottom_edge();
+    clip_top_edge();
+
+    draw_polygon();
     glFlush();
 }
 
