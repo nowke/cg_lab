@@ -37,21 +37,10 @@ void setup_polygon() {
     }
 }
 
-void print_polygon() {
-    cout << "POLYGON\n=====\n";
-    for (int i=0; i<polygon.size(); i++) {
-        cout << "(" << polygon[i].x << ", " << polygon[i].y << ")" << endl;
-    }
-    cout << "=====\nEND POLYGON\n";
-}
-
 void clip_left_edge() {
     vector<Point> new_polygon;
     int n = (int) polygon.size();
     for (int i=0; i<n; i++) {
-        cout << "(" <<  polygon[i].x << ", " << polygon[i].y << ")"
-            << ", (" << polygon[(i + 1) % n].x << ", " << polygon[(i + 1) % n].y << ")" << endl;
-
         Point v1 = polygon[i];
         Point v2 = polygon[(i + 1) % n];
 
@@ -63,10 +52,8 @@ void clip_left_edge() {
         if (v1.x <= left_edge_x && v2.x > left_edge_x) {
             // Find intersection (x, y)
             double slope = (double)(v1.y - v2.y) / (v1.x - v2.x);
-            cout << slope << endl;
             int x = left_edge_x;
             int y =  (int) (v1.y + slope * (left_edge_x - v1.x));
-            cout << x << ", " << y << endl;
 
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
@@ -84,11 +71,8 @@ void clip_left_edge() {
         if (v1.x > left_edge_x && v2.x <= left_edge_x) {
             // Find intersection (x, y)
             double slope = (double)(v1.y - v2.y) / (v1.x - v2.x);
-            cout << slope << endl;
             int x = left_edge_x;
             int y =  (int) (v2.y + slope * (left_edge_x - v2.x));
-            cout << x << ", " << y << endl;
-
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
         }
@@ -101,9 +85,6 @@ void clip_right_edge() {
     vector<Point> new_polygon;
     int n = (int) polygon.size();
     for (int i=0; i<n; i++) {
-        cout << "(" <<  polygon[i].x << ", " << polygon[i].y << ")"
-        << ", (" << polygon[(i + 1) % n].x << ", " << polygon[(i + 1) % n].y << ")" << endl;
-
         Point v1 = polygon[i];
         Point v2 = polygon[(i + 1) % n];
 
@@ -115,11 +96,8 @@ void clip_right_edge() {
         if (v1.x >= right_edge_x && v2.x < right_edge_x) {
             // Find intersection (x, y)
             double slope = (double)(v1.y - v2.y) / (v1.x - v2.x);
-            cout << slope << endl;
             int x = right_edge_x;
             int y =  (int) (v1.y + slope * (right_edge_x - v1.x));
-            cout << x << ", " << y << endl;
-
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
             new_polygon.push_back(v2);
@@ -136,10 +114,8 @@ void clip_right_edge() {
         if (v1.x < right_edge_x && v2.x >= right_edge_x) {
             // Find intersection (x, y)
             double slope = (double)(v1.y - v2.y) / (v1.x - v2.x);
-            cout << slope << endl;
             int x = right_edge_x;
             int y =  (int) (v2.y + slope * (right_edge_x - v2.x));
-            cout << x << ", " << y << endl;
 
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
@@ -153,9 +129,6 @@ void clip_bottom_edge() {
     vector<Point> new_polygon;
     int n = (int) polygon.size();
     for (int i=0; i<n; i++) {
-        cout << "(" <<  polygon[i].x << ", " << polygon[i].y << ")"
-        << ", (" << polygon[(i + 1) % n].x << ", " << polygon[(i + 1) % n].y << ")" << endl;
-
         Point v1 = polygon[i];
         Point v2 = polygon[(i + 1) % n];
 
@@ -172,10 +145,8 @@ void clip_bottom_edge() {
                 x = v1.x;
             } else {
                 double slope = (double) (v1.y - v2.y) / (v1.x - v2.x);
-                cout << slope << endl;
                 y = bottom_edge_y;
                 x = (int) (v1.x + (1 / slope) * (bottom_edge_y - v1.y));
-                cout << x << ", " << y << endl;
             }
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
@@ -198,10 +169,8 @@ void clip_bottom_edge() {
             } else {
                 // Find intersection (x, y)
                 double slope = (double) (v1.y - v2.y) / (v1.x - v2.x);
-                cout << slope << endl;
                 y = bottom_edge_y;
                 x = (int) (v1.x + (1 / slope ) * (bottom_edge_y - v1.y));
-                cout << x << ", " << y << endl;
             }
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
@@ -215,9 +184,6 @@ void clip_top_edge() {
     vector<Point> new_polygon;
     int n = (int) polygon.size();
     for (int i=0; i<n; i++) {
-        cout << "(" <<  polygon[i].x << ", " << polygon[i].y << ")"
-        << ", (" << polygon[(i + 1) % n].x << ", " << polygon[(i + 1) % n].y << ")" << endl;
-
         Point v1 = polygon[i];
         Point v2 = polygon[(i + 1) % n];
 
@@ -234,10 +200,8 @@ void clip_top_edge() {
                 x = v1.x;
             } else {
                 double slope = (double) (v1.y - v2.y) / (v1.x - v2.x);
-                cout << slope << endl;
                 y = top_edge_y;
                 x = (int) (v1.x + (1 / slope) * (top_edge_y - v1.y));
-                cout << x << ", " << y << endl;
             }
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
@@ -260,10 +224,8 @@ void clip_top_edge() {
             } else {
                 // Find intersection (x, y)
                 double slope = (double) (v1.y - v2.y) / (v1.x - v2.x);
-                cout << slope << endl;
                 y = top_edge_y;
                 x = (int) (v1.x + (1 / slope )* (top_edge_y - v1.y));
-                cout << x << ", " << y << endl;
             }
             Point v1_dash; v1_dash.x = x, v1_dash.y = y;
             new_polygon.push_back(v1_dash);
@@ -275,13 +237,9 @@ void clip_top_edge() {
 
 void calc_polygon() {
     clip_left_edge();
-    print_polygon();
     clip_right_edge();
-    print_polygon();
     clip_bottom_edge();
-    print_polygon();
     clip_top_edge();
-    print_polygon();
 }
 
 void draw_window() {
@@ -297,10 +255,8 @@ void draw_polygon() {
     glColor3f(1.0, 0.0, 0.0);
     glBegin(GL_POLYGON);
     for (int i=0; i<polygon.size(); i++) {
-        cout << "(" << polygon[i].x << "," << polygon[i].y << ")" << endl;
         glVertex2f(polygon[i].x, polygon[i].y);
     }
-    cout << "glEnd()";
     glEnd();
 }
 
@@ -337,7 +293,6 @@ int main(int argc, char* argv[]) {
     glutCreateWindow("Polygon Clipped!");
     myInit();
     glutDisplayFunc(display2);
-
 
     glutMainLoop();
     return 0;
