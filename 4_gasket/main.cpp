@@ -14,7 +14,6 @@ int n;
 void myInit() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_PROJECTION);
     glOrtho(-500, 500, -500, 500, -500, 500);
 }
 
@@ -55,6 +54,14 @@ void myDisplay() {
     glFlush();
 }
 
+void myKeyboard(unsigned char key, int x, int y) {
+    if (key > 48 && key < 57) {
+        n = key - 48;
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glutPostRedisplay();
+    }
+}
+
 int main(int argc, char **argv) {
 
     n = 2;
@@ -65,6 +72,7 @@ int main(int argc, char **argv) {
     glutCreateWindow("3D Gasket");
     myInit();
     glutDisplayFunc(myDisplay);
+    glutKeyboardFunc(myKeyboard);
     glEnable(GL_DEPTH_TEST);
     glutMainLoop();
 

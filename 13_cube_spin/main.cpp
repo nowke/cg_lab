@@ -13,7 +13,7 @@
 #include <iostream>
 using namespace std;
 
-GLfloat vertices[] = {-1.0, -1.0, -1.0,
+float vertices[] = {-1.0, -1.0, -1.0,
                        1.0, -1.0, -1.0,
                        1.0, 1.0, -1.0,
                       -1.0, 1.0, -1.0,
@@ -21,7 +21,7 @@ GLfloat vertices[] = {-1.0, -1.0, -1.0,
                        1.0, -1.0, 1.0,
                        1.0, 1.0, 1.0,
                       -1.0, 1.0, 1.0};
-GLfloat colors[] = {0.0, 0.0, 0.0,
+float colors[] = {0.0, 0.0, 0.0,
                     1.0, 0.0, 0.0,
                     1.0, 1.0, 0.0,
                     0.0, 1.0, 0.0,
@@ -33,8 +33,8 @@ GLubyte cube_indices[] = {0, 1, 2, 3,
                           0, 4, 7, 3,
                           2, 3, 7, 6,
                           0, 1, 5, 4};
-static GLfloat theta[] = {0.0, 0.0, 0.0};
-static GLint axis = 2;
+float theta[] = {0.0, 0.0, 0.0};
+int axis = 2;
 
 void myInit() {
     glMatrixMode(GL_PROJECTION);
@@ -77,10 +77,11 @@ int main(int argc, char **argv) {
     glutIdleFunc(cube_spin);
     glutMouseFunc(mouse);
     glEnable(GL_DEPTH_TEST);
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(3, GL_FLOAT, 0, colors);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(3, GL_FLOAT, 0, colors);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
 
     glutMainLoop();
 }

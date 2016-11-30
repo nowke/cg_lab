@@ -16,13 +16,16 @@ using namespace std;
 
 float x[4], y[4];
 
+int cnt = 0;
+
 void myInit() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    gluOrtho2D(0.0, 800, 0.0, 800);
+    gluOrtho2D(0.0, 500, 0.0, 500);
 }
 
 void myDisplay() {
+    glClear(GL_COLOR_BUFFER_BIT);
     double xt, yt;
     glPointSize(4.0);
     glColor3f(0.0, 0.0, 0.0);
@@ -39,13 +42,31 @@ void myDisplay() {
     glFlush();
 }
 
+void myMouse(int button, int state, int cx, int cy) {
+    cy = 500 - cy;
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+        cnt++;
+        if (cnt == 1)
+            x[0] = cx, y[0] = cy;
+        else if (cnt == 2)
+            x[1] = cx, y[1] = cy;
+        else if (cnt == 3)
+            x[2] = cx, y[2] = cy;
+        else if (cnt == 4) {
+            x[3] = cx, y[3] = cy;
+            cnt = 0;
+            glutPostRedisplay();
+        }
+    }
+}
+
 int main(int argc, char **argv) {
-    cout << "Enter x coordinates :" << endl;
-    for(int i = 0; i < 4; i++)
-        cin >> x[i];
-    cout << "Enter y coordinates :" << endl;
-    for(int i = 0; i < 4; i++)
-        cin >> y[i];
+//    cout << "Enter x coordinates :" << endl;
+//    for(int i = 0; i < 4; i++)
+//        cin >> x[i];
+//    cout << "Enter y coordinates :" << endl;
+//    for(int i = 0; i < 4; i++)
+//        cin >> y[i];
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(500, 500);
@@ -53,5 +74,6 @@ int main(int argc, char **argv) {
     glutCreateWindow("Bezier Curve");
     myInit();
     glutDisplayFunc(myDisplay);
+    glutMouseFunc(myMouse);
     glutMainLoop();
 }

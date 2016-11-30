@@ -23,21 +23,20 @@ int curveNum;
 
 void myInit() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
-    glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0.0, 600.0, 0.0, 500.0);
 }
 
 void lineSegment(point p1, point p2) {
     glBegin(GL_LINES);
-    glVertex2i(p1.x, p1.y);
-    glVertex2i(p2.x, p2.y);
+    glVertex2f(p1.x, p1.y);
+    glVertex2f(p2.x, p2.y);
     glEnd();
 }
 
 void draw_curve(int curveNum) {
-    const int a = 175, b = 60;
+    int a = 175, b = 60;
     int x0 = 200, y0 = 250;
-    const float twoPi = 6.283185;
+    float twoPi = 6.283185;
     float r, theta, dtheta = 1.0 / float(a);
     point curvePt[2];
     glColor3f(0.0, 0.0, 0.0);
@@ -65,7 +64,7 @@ void draw_curve(int curveNum) {
                 r = a * cos(theta) + b;
                 break;
             case 2:
-                r = a * (1 + cos(theta));
+                r = a * cos(theta) + a;
                 break;
             case 3:
                 r = a * cos(3 * theta);
@@ -80,8 +79,7 @@ void draw_curve(int curveNum) {
         curvePt[1].y = y0 + r * sin(theta);
         lineSegment(curvePt[0], curvePt[1]);
 
-        curvePt[0].x = curvePt[1].x;
-        curvePt[0].y = curvePt[1].y;
+        curvePt[0] = curvePt[1];
         theta += dtheta;
     }
 }
@@ -92,11 +90,25 @@ void myDisplay() {
     glFlush();
 }
 
+void myKeyboard(unsigned char key, int x, int y) {
+    switch (key) {
+        case '1':
+            curveNum = 1;
+            break;
+        case '2':
+            curveNum = 2;
+            break;
+        case '3':
+            curveNum = 3;
+            break;
+        case '4':
+            curveNum = 4;
+            break;
+    }
+    glutPostRedisplay();
+}
+
 int main(int argc, char **argv) {
-    cout << "1. Limacon\n2. Cardiod\n3.Three-Leaf\n4.Spiral" << endl;
-    cout << "Enter user choice : ";
-    cin >> curveNum;
-    int curveNum;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(600, 500);
@@ -104,5 +116,6 @@ int main(int argc, char **argv) {
     glutCreateWindow("Limacon, Cardiod, Three-Leaf and Spiral");
     myInit();
     glutDisplayFunc(myDisplay);
+    glutKeyboardFunc(myKeyboard);
     glutMainLoop();
 }

@@ -14,6 +14,7 @@
 using namespace std;
 
 int x1, y1, x2, y2;
+int click_count = 0;
 
 void myInit() {
     glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -81,10 +82,38 @@ void myDisplay() {
     glFlush();
 }
 
+void myMouse(int button, int state, int x, int y) {
+    y = 500 - y;
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        x1 = x, y1 = y;
+    }
+}
+
+//void myMouse(int button, int state, int x, int y) {
+//    y = 500 - y;
+//    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+//        click_count++;
+//        if (click_count == 1) {
+//            x1 = x, y1 = y;
+//        } else if (click_count == 2) {
+//            x2 = x, y2 = y;
+//            click_count = 0;
+//            glutPostRedisplay();
+//        }
+//    }
+//}
+
+void myMotion(int x, int y) {
+    glClear(GL_COLOR_BUFFER_BIT);
+    y = 500 - y;
+    x2 = x, y2 = y;
+    glutPostRedisplay();
+}
+
 int main(int argc, char **argv) {
 
-    cout << "Enter (x1, y1), (x2, y2)" << endl;
-    cin >> x1 >> y1 >> x2 >> y2;
+//    cout << "Enter (x1, y1), (x2, y2)" << endl;
+//    cin >> x1 >> y1 >> x2 >> y2;
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
@@ -93,6 +122,8 @@ int main(int argc, char **argv) {
     glutCreateWindow("Bresenham's Line Drawing");
     myInit();
     glutDisplayFunc(myDisplay);
+    glutMouseFunc(myMouse);
+    glutMotionFunc(myMotion);
     glutMainLoop();
 
     return 0;

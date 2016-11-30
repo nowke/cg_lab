@@ -49,7 +49,7 @@ void display_double() {
 }
 
 void spin_display() {
-    spin = spin + 0.025;
+    spin += 0.025; // Radian
     x =  cos(spin);
     y = sin(spin);
 
@@ -62,7 +62,7 @@ void spin_display() {
 void mouse(int btn, int state, int x, int y) {
     if(btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
         glutIdleFunc(spin_display);
-    else if(btn == GLUT_RIGHT_BUTTON && state == GLUT_UP)
+    if(btn == GLUT_RIGHT_BUTTON && state == GLUT_UP)
         glutIdleFunc(NULL);
 }
 

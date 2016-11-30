@@ -8,48 +8,46 @@
 #include <GL/glut.h>
 #endif
 
-GLfloat house[3][9]={ {100.0,100.0,250.0,250.0,175.0,150.0,150.0,200.0,200.0},
-                      {100.0,300.0,300.0,100.0,400.0,100.0,150.0,150.0,100.0},
-                      {1.0,   1.0,    1.0,    1.0,    1.0,    1.0,    1.0,    1.0,    1.0  }  };
+float house[][2] = {{100, 100}, {100, 300}, {250, 300},
+                    {250, 100}, {175, 400}, {150, 100},
+                    {150, 150}, {200, 150}, {200, 100}};
+
+float pivot[] = {100, 100}; // Pivot Point
+float angle = 90; // Angle of rotation in degree
 
 void myInit() {
-    glClearColor(1.0,1.0,1.0,1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    glMatrixMode(GL_PROJECTION);
     gluOrtho2D(-300, 500.0, -300, 500.0);
-    glColor3f(0.0, 0.0, 0.0);
 }
-
 
 void draw_house() {
     glColor3f(1.0,0.0,0.0);
     glBegin(GL_LINE_LOOP);
-    glVertex2f(house[0][0],house[1][0]);
-    glVertex2f(house[0][1],house[1][1]);
-    glVertex2f(house[0][2],house[1][2]);
-    glVertex2f(house[0][3],house[1][3]);
+        glVertex2fv(house[0]);
+        glVertex2fv(house[1]);
+        glVertex2fv(house[2]);
+        glVertex2fv(house[3]);
     glEnd();
-    glColor3f(1.0,0.0,0.0);
     glBegin(GL_LINE_LOOP);
-    glVertex2f(house[0][5],house[1][5]);
-    glVertex2f(house[0][6],house[1][6]);
-    glVertex2f(house[0][7],house[1][7]);
-    glVertex2f(house[0][8],house[1][8]);
+        glVertex2fv(house[5]);
+        glVertex2fv(house[6]);
+        glVertex2fv(house[7]);
+        glVertex2fv(house[8]);
     glEnd();
-    glColor3f(1.0,0.0,0.0);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(house[0][1],house[1][1]);
-    glVertex2f(house[0][4],house[1][4]);
-    glVertex2f(house[0][2],house[1][2]);
+        glBegin(GL_LINE_LOOP);
+        glVertex2fv(house[1]);
+        glVertex2fv(house[4]);
+        glVertex2fv(house[2]);
     glEnd();
 }
 
-
 void rotate() {
     glPushMatrix();
-    glTranslatef(100,100,0.0);
-    glRotatef(60, 0.0,0.0,1.0);
-    glTranslatef(-100,-100,0.0);
+
+    glTranslatef(pivot[0], pivot[1], 0.0);
+    glRotatef(angle, 0.0, 0.0, 1.0); // Rotate around z-axis
+    glTranslatef(-pivot[0], -pivot[1], 0.0);
 
     draw_house();
 
@@ -63,7 +61,6 @@ void display() {
 }
 
 int main(int argc, char* argv[]) {
-
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
     glutInitWindowSize(500,500);
@@ -72,5 +69,6 @@ int main(int argc, char* argv[]) {
     glutDisplayFunc(display);
     myInit();
     glutMainLoop();
+
     return 0;
 }
